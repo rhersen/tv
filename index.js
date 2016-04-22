@@ -1,4 +1,1 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-
-ReactDOM.render(<h1>Hello React!</h1>, document.getElementById('root'));
+document.getElementById('root').insertAdjacentHTML('beforeend', '<h1>Hello ES2015!</h1>');
