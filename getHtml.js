@@ -16,7 +16,16 @@ function getHtml(announcements, stationNames) {
     foreach(groupby(latest, direction), (trains, dir) => {
         s += `<h1>${dir}</h1>`
 
-        trains.sort((a, b) => position.y(a.LocationSignature) - position.y(b.LocationSignature))
+        trains.sort((t1, t2) => {
+            const p1 = position.y(t1.LocationSignature)
+            const p2 = position.y(t2.LocationSignature)
+
+            if (p1 !== p2)
+                return p1 - p2
+
+            const diff = moment(t1.TimeAtLocation).diff(moment(t2.TimeAtLocation), 'minutes')
+            return isSouthbound(t1) ? -diff : diff
+        })
 
         foreach(trains, a => {
             s += `<div class="${position.x(a.LocationSignature)}`
@@ -36,7 +45,11 @@ function delay(a) {
 }
 
 function direction(t) {
-    return /[13579]$/.test(t.AdvertisedTrainIdent) ? 'söderut' : 'norrut'
+    return isSouthbound(t) ? 'söderut' : 'norrut'
+}
+
+function isSouthbound(t) {
+    return /[13579]$/.test(t.AdvertisedTrainIdent)
 }
 
 module.exports = getHtml
