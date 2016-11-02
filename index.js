@@ -1,6 +1,6 @@
 require('./style.css')
 
-const getHtml = require('./getHtml')
+const html = require('./html')
 
 const r1 = new XMLHttpRequest()
 const r2 = new XMLHttpRequest()
@@ -19,10 +19,12 @@ r1.onload = function () {
     }
 }
 r2.onload = function () {
-    if (this.status >= 200 && this.status < 400)
-        document.getElementById('root')
-            .insertAdjacentHTML('beforeend',
-                getHtml(JSON.parse(this.response).RESPONSE.RESULT[0].TrainAnnouncement, stations))
+    if (this.status >= 200 && this.status < 400) {
+        const result = JSON.parse(this.response).RESPONSE.RESULT[0]
+        const root = document.getElementById('root')
+        root.insertAdjacentHTML('afterbegin', html.lastModified(result.INFO))
+        root.insertAdjacentHTML('beforeend', html.trains(result.TrainAnnouncement, stations))
+    }
 }
 
 r1.send()
