@@ -37,7 +37,7 @@ module.exports = {
     },
 
     lastModified: (info) =>
-    `<div>${info.LASTMODIFIED['@datetime']}</div>`
+    `<div>${moment(info.LASTMODIFIED['@datetime']).format('H:mm:ss')}</div>`
 }
 
 function delay(a) {

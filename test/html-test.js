@@ -118,12 +118,12 @@ describe('html', function () {
         })
     })
     describe('lastModified', function () {
-        it('should', function () {
+        it('formats with 24h', function () {
             expect(html.lastModified({
                 'LASTMODIFIED': {
-                    '@datetime': '2016-11-02T06:32:52.509Z'
+                    '@datetime': '2016-11-02T16:32:52.509Z'
                 }
-            })).to.equal('<div>2016-11-02T06:32:52.509Z</div>')
+            })).to.equal('<div>17:32:52</div>')
         })
     })
 })
