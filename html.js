@@ -10,7 +10,7 @@ const position = require('./position')
 
 module.exports = {
     trains: (announcements, stationNames) => {
-        let s = ''
+        let s = '<div id="trains">'
 
         const latest = map(groupby(announcements, 'AdvertisedTrainIdent'), v => maxby(v, 'TimeAtLocation'))
 
@@ -33,11 +33,13 @@ module.exports = {
                 s += ` ${delay(a)}">${formatLatestAnnouncement(a, stationNames)}</div>`
             })
         })
+
+        s += '</div>'
         return s
     },
 
-    lastModified: (info) =>
-    `<div>${moment(info.LASTMODIFIED['@datetime']).format('H:mm:ss')}</div>`
+    lastModified: info =>
+        moment(info.LASTMODIFIED['@datetime']).format('H:mm:ss')
 }
 
 function delay(a) {

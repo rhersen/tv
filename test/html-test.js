@@ -5,8 +5,8 @@ const html = require('../html')
 describe('html', function () {
     describe('trains', function () {
         describe('texts', function () {
-            it('returns empty string on empty input', function () {
-                expect(html.trains()).to.be.empty
+            it('returns empty div on empty input', function () {
+                expect(html.trains()).to.equal('<div id="trains"></div>')
             })
 
             const announcements = [{
@@ -70,6 +70,11 @@ describe('html', function () {
                 expect(html.trains(announcements))
                     .to.match(/Tåg 2864 mot Spå avgick från Sub i tid klockan 22:06/)
             })
+
+            it('sets id on outer div', function () {
+                expect(html.trains(announcements))
+                    .to.match(/^.div id=.trains/)
+            })
         })
 
         describe('sorting', function () {
@@ -123,7 +128,7 @@ describe('html', function () {
                 'LASTMODIFIED': {
                     '@datetime': '2016-11-02T16:32:52.509Z'
                 }
-            })).to.equal('<div>17:32:52</div>')
+            })).to.equal('17:32:52')
         })
     })
 })
