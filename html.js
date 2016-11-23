@@ -5,56 +5,69 @@ const groupby = require('lodash.groupby')
 const map = require('lodash.map')
 const maxby = require('lodash.maxby')
 
-const formatLatestAnnouncement = require('./formatLatestAnnouncement')
 const position = require('./position')
+const MatchingTrains = require('./MatchingTrains')
 
 module.exports = {
-    trains: (announcements, stationNames) => {
+    trains: as => {
         let s = '<div id="trains">'
+        const sub = as.filter(a => a.LocationSignature === 'Sub').filter(a => a.ActivityType === 'Avgang')
+        const tul = as.filter(a => a.LocationSignature === 'Tul').filter(a => a.ActivityType === 'Ankomst')
+        const southbounds = sub.filter(southbound)
+            .map(avgang =>
+                selectAnkomst(tul.filter(southbound).filter(ankomst => minutes(ankomst, avgang) > 29), avgang))
 
-        const latest = map(groupby(announcements, 'AdvertisedTrainIdent'), v => maxby(v, 'TimeAtLocation'))
+        s += '<table>'
+        s += '<caption>Från Tullinge</caption>'
 
-        foreach(groupby(latest, direction), (trains, dir) => {
-            s += `<h1>${dir}</h1>`
+        MatchingTrains.getNorthbound(as)
+            .forEach(selected => selected && writeRow(selected.ankomst, selected.avgang))
 
-            trains.sort((t1, t2) => {
-                const p1 = position.y(t1.LocationSignature)
-                const p2 = position.y(t2.LocationSignature)
+        s += '</table>'
 
-                if (p1 !== p2)
-                    return p1 - p2
-
-                const diff = moment(t1.TimeAtLocation).diff(moment(t2.TimeAtLocation), 'minutes')
-                return isSouthbound(t1) ? -diff : diff
-            })
-
-            foreach(trains, a => {
-                s += `<div class="${position.x(a.LocationSignature)}`
-                s += ` ${delay(a)}">${formatLatestAnnouncement(a, stationNames)}</div>`
-            })
-        })
-
+        s += '<table>'
+        s += '<caption>Från Sundbyberg</caption>'
+        southbounds.forEach(selected => selected && writeRow(selected.ankomst, selected.avgang))
+        s += '</table>'
         s += '</div>'
+
         return s
+
+        function southbound(ankomst) {
+            return /[13579]$/.test(ankomst.AdvertisedTrainIdent)
+        }
+
+        function selectAnkomst(ankomsts, avgang) {
+            if (ankomsts.length) {
+                const selected = ankomsts.reduce((prev, cur) => {
+                    const diff1 = minutes(prev, avgang)
+                    const diff2 = minutes(cur, avgang)
+                    return diff2 < diff1 ? cur : prev
+                })
+
+                return {ankomst: selected, avgang: avgang}
+            }
+        }
+
+        function minutes(ankomst, avgang) {
+            const ank = ankomst.AdvertisedTimeAtLocation
+            const avg = avgang.AdvertisedTimeAtLocation
+            const ankm = moment(ank)
+            const avgm = moment(avg)
+            return ankm.diff(avgm, 'minutes')
+        }
+
+        function writeRow(ankomst, avgang) {
+            const departureTime = avgang.AdvertisedTimeAtLocation.substring(11, 16)
+            const trainIdent = ankomst.AdvertisedTrainIdent
+            const minuteDiff = minutes(ankomst, avgang) - 32
+            s += '<tr>'
+            s += `<td>${departureTime}`
+            s += `<td><a href="javascript:getTrain(${trainIdent})">${trainIdent}</a>`
+            s += `<td>${minuteDiff} min`
+        }
     },
 
     lastModified: info =>
         moment(info.LASTMODIFIED['@datetime']).format('H:mm:ss')
-}
-
-function delay(a) {
-    const minutes = moment(a.TimeAtLocation).diff(moment(a.AdvertisedTimeAtLocation), 'minutes')
-    if (minutes < 1) return 'delay0'
-    if (minutes < 2) return 'delay1'
-    if (minutes < 4) return 'delay2'
-    if (minutes < 8) return 'delay4'
-    return 'delay8'
-}
-
-function direction(t) {
-    return isSouthbound(t) ? 'söderut' : 'norrut'
-}
-
-function isSouthbound(t) {
-    return /[13579]$/.test(t.AdvertisedTrainIdent)
 }
