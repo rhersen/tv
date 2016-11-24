@@ -19,7 +19,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/json': {
-                target: 'http://localhost:1339',
+                target: 'http://localhost:1337',
                 secure: false
             }
         }
