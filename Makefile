@@ -6,8 +6,8 @@ pull:
 mocha:
 	node_modules/.bin/mocha
 
-bundle.js:	entry.js format.js style.css trains.hbs
-	node_modules/.bin/webpack
+bundle.js:	index.js html.js formatLatestAnnouncement.js MatchingTrains.js style.css
+	node_modules/.bin/webpack --optimize-minimize
 
 /opt/nginx-1.2.8/ingela/bundle.js:	bundle.js
 	cp bundle.js /opt/nginx-1.2.8/ingela/
