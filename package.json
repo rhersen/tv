@@ -10,11 +10,6 @@
   "author": "",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "lodash.includes": "4.x",
-    "lodash.foreach": "4.x",
-    "lodash.groupby": "4.x",
-    "lodash.map": "4.x",
-    "lodash.maxby": "4.x",
     "moment": "^2.13.0"
   },
   "devDependencies": {

@@ -1,11 +1,5 @@
 const moment = require('moment')
 
-const foreach = require('lodash.foreach')
-const groupby = require('lodash.groupby')
-const map = require('lodash.map')
-const maxby = require('lodash.maxby')
-
-const position = require('./position')
 const MatchingTrains = require('./MatchingTrains')
 
 module.exports = {
