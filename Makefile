@@ -1,4 +1,4 @@
-install:	pull mocha /opt/nginx-1.2.8/ingela/bundle.js /opt/nginx-1.2.8/ingela/index.html
+install:	pull mocha /opt/nginx-1.2.8/ingela/browser-bundle.js /opt/nginx-1.2.8/ingela/index.html
 
 pull:
 	git pull
@@ -6,7 +6,7 @@ pull:
 mocha:
 	node_modules/.bin/mocha
 
-bundle.js:	index.js html.js formatLatestAnnouncement.js MatchingTrains.js style.css
+browser-bundle.js:	index.js html.js formatLatestAnnouncement.js MatchingTrains.js style.css
 	node_modules/.bin/webpack --optimize-minimize
 
 /opt/nginx-1.2.8/ingela/browser-bundle.js:	browser-bundle.js
