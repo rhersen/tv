@@ -8,7 +8,7 @@ function formatLatestAnnouncement(announcements, stationNames) {
     const a = announcements[0]
     const s = a.TimeAtLocation.substring(11, 16)
 
-    return `Tåg ${a.AdvertisedTrainIdent} mot ${to(a)} ${activity(a)} ${location(a)} ${precision(a)} klockan ${ s}`
+    return `<div id="trains">Tåg ${a.AdvertisedTrainIdent} mot ${to(a)} ${activity(a)} ${location(a)} ${precision(a)} klockan ${ s}</div>`
 
     function location() {
         return stationNames ? stationNames[a.LocationSignature] : a.LocationSignature
