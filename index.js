@@ -3,14 +3,6 @@ const moment = require('moment')
 require('./style.css')
 const getHtml = require('./getHtml')
 
-const location = {
-    c: ['Äs', 'Åbe', 'Sst', 'Cst', 'Ke'],
-    n: ['So', 'Udl', 'Hel', 'Sol', 'Hgv', 'Nvk', 'R', 'Upv', 'Arnc'],
-    s: ['Rön', 'Tu', 'Tul', 'Flb', 'Hu', 'Sta'],
-    e: ['Hnd', 'Skg', 'Tåd', 'Fas'],
-    w: ['Sub', 'Spå', 'Bkb', 'Jkb']
-}
-
 let stations
 
 const root = document.getElementById('root')
