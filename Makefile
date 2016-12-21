@@ -6,7 +6,7 @@ pull:
 mocha:
 	node_modules/.bin/mocha
 
-browser-bundle.js:	index.js htmlTable.js formatTimes.js times.js trains.js style.css
+browser-bundle.js:	index.js getHtml.js formatLatestAnnouncement.js position.js style.css
 	node_modules/.bin/webpack --optimize-minimize
 
 /opt/nginx-1.2.8/ingela/browser-bundle.js:	browser-bundle.js
