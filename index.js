@@ -15,7 +15,7 @@ getStations()
 
 window.getStation = (id) => {
     const xhr = new XMLHttpRequest()
-    xhr.onload = handleCurrent
+    xhr.onload = handleStation
     xhr.open('GET', '/json/departures?locations=' + id + '&since=0:10&until=0:50', true)
     xhr.send()
     document.getElementById('sheet').innerHTML = ''
@@ -43,7 +43,7 @@ function handleStations() {
     }
 }
 
-function handleCurrent() {
+function handleStation() {
     if (this.status >= 200 && this.status < 400) {
         const result = JSON.parse(this.response).RESPONSE.RESULT[0]
         document.getElementById('sheet').outerHTML = getHtml(result.TrainAnnouncement, stations)
@@ -62,8 +62,8 @@ window.getTrain = (id) => {
             document.getElementById('sheet').outerHTML = getTrainHtml(result.TrainAnnouncement, stations)
             document.getElementById('update').textContent = result.INFO.LASTMODIFIED['@datetime']
         } else {
-            document.getElementById('sheet').innerHTML = this.status
-            document.getElementById('update').textContent = this.status
+            document.getElementById('sheet').innerHTML = `status ${this.status}`
+            document.getElementById('update').textContent = `status ${this.status}`
         }
     }
 
