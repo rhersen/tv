@@ -1,7 +1,6 @@
-const moment = require('moment')
-
 require('./style.css')
 const getHtml = require('./getHtml')
+const getTrainHtml = require('./getTrainHtml')
 
 let stations
 
@@ -14,11 +13,16 @@ button.onclick = getCurrent
 
 getStations()
 
-function getCurrent() {
+window.getStation = (id) => {
     const xhr = new XMLHttpRequest()
     xhr.onload = handleCurrent
-    xhr.open('GET', '/json/current', true)
+    xhr.open('GET', '/json/departures?locations=' + id + '&since=0:10&until=0:50', true)
     xhr.send()
+    document.getElementById('sheet').innerHTML = ''
+}
+
+function getCurrent() {
+    window.getStation('Sst')
 }
 
 function getStations() {
@@ -43,10 +47,27 @@ function handleCurrent() {
     if (this.status >= 200 && this.status < 400) {
         const result = JSON.parse(this.response).RESPONSE.RESULT[0]
         document.getElementById('sheet').outerHTML = getHtml(result.TrainAnnouncement, stations)
-        document.getElementById('update').textContent =
-            moment(result.INFO.LASTMODIFIED['@datetime']).format('H:mm:ss')
+        document.getElementById('update').textContent = result.INFO.LASTMODIFIED['@datetime']
     } else {
         document.getElementById('update').textContent = this.status
         document.getElementById('sheet').innerHTML = this.status
     }
+}
+
+window.getTrain = (id) => {
+    const xhr = new XMLHttpRequest()
+    xhr.onload = function () {
+        if (this.status >= 200 && this.status < 400) {
+            const result = JSON.parse(this.response).RESPONSE.RESULT[0]
+            document.getElementById('sheet').outerHTML = getTrainHtml(result.TrainAnnouncement, stations)
+            document.getElementById('update').textContent = result.INFO.LASTMODIFIED['@datetime']
+        } else {
+            document.getElementById('sheet').innerHTML = this.status
+            document.getElementById('update').textContent = this.status
+        }
+    }
+
+    xhr.open('GET', `/json/train/${id}`, true)
+    xhr.send()
+    document.getElementById('sheet').innerHTML = ''
 }

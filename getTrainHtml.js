@@ -3,7 +3,7 @@ const groupby = require('lodash.groupby')
 const map = require('lodash.map')
 const maxby = require('lodash.maxby')
 
-const formatLatestAnnouncement = require('./formatLatestAnnouncement')
+const formatAnnouncement = require('./formatAnnouncement')
 const position = require('./position')
 
 function getHtml(announcements, stationNames) {
@@ -11,9 +11,9 @@ function getHtml(announcements, stationNames) {
 
     if (announcements.length) {
         const a = announcements[0]
-        s += '<div class="station">'
-        s += `<a href='javascript:getStation("${a.LocationSignature}")'>`
-        s += stationName(a.LocationSignature)
+        s += '<div class="train">'
+        s += `<a href="javascript:getTrain(${a.AdvertisedTrainIdent})">`
+        s += a.AdvertisedTrainIdent
         s += '</a>'
         s += '</div>'
     }
@@ -23,16 +23,12 @@ function getHtml(announcements, stationNames) {
     const now = Date.now()
 
     foreach(announcements, a => {
-        s += `${formatLatestAnnouncement(a, now, stationNames)}`
+        s += `${formatAnnouncement(a, now, stationNames)}`
     })
 
     s += '</table>'
     s += '</div>'
     return s
-
-    function stationName(locationSignature) {
-        return stationNames ? stationNames[locationSignature] : locationSignature
-    }
 }
 
 module.exports = getHtml

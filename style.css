@@ -1,39 +1,66 @@
 body {
-  font-family: sans-serif;
-  color: white;
-  background-color: black;
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  color: ivory;
+  background-color: darkslategray;
 }
 
-button#update {
-  font-size: 24px;
+div a {
+  color: ivory;
 }
 
-table {
-  margin-bottom: 1em
+div.stations {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 200%;
 }
 
-caption {
-  font-weight: bold
+div.stations a {
+  font-size: inherit;
+  background-color: yellow;
+  text-decoration: none;
+  color: black;
+  padding: 0.3em 0.3em 0.3em 0.3em;
 }
 
-.actual {
-  font-weight: bold
-}
-
-div.west {
-  text-align: left;
-}
-
-div.central {
+td.station {
   text-align: center;
 }
 
-div.east {
-  text-align: right;
+.station a {
+  font-weight: bold;
+  background-color: yellow;
+  text-decoration: none;
+  color: black;
+  padding: 0 0.2em;
 }
 
-div.delay0 { color: #0f0; }
-div.delay1 { color: #fff; }
-div.delay2 { color: #ff0; }
-div.delay4 { color: #f80; }
-div.delay8 { color: #f00; }
+.train a {
+  background-color: silver;
+  text-decoration: none;
+  color: navy;
+  padding: 0 0.2em;
+}
+
+.fresh {
+  background-color: palegreen
+}
+
+.recent {
+  background-color: yellow
+}
+
+.stale {
+  background-color: sandybrown
+}
+
+.dead {
+  background-color: red
+}
+
+table.timetable {
+  border-collapse: collapse;
+}
+
+table.timetable td {
+  border: 1px solid;
+}

@@ -5,16 +5,16 @@ function formatLatestAnnouncement(a, now, stationNames) {
     if (!a)
         return 'Aktuell information saknas'
 
+
     return `<tr>
+<td class="station"><a href="${href()}">${stationName(a.LocationSignature)}</a></td>
 <td>${difference()}</td>
 <td>${a.AdvertisedTimeAtLocation.substring(11, 16)}</td>
-<td>${to()}</td>
 <td>${time()}</td>
-<td class='train'><a href="${href()}">${a.AdvertisedTrainIdent}</a></td>
 </tr>`
 
     function href() {
-        return `javascript:getTrain(${a.AdvertisedTrainIdent})`
+        return `javascript:getStation('${a.LocationSignature}')`
     }
 
     function difference() {
@@ -38,10 +38,6 @@ function formatLatestAnnouncement(a, now, stationNames) {
 
     function pad(seconds) {
         return (seconds < 10 ? '0' : '') + seconds
-    }
-
-    function to() {
-        return map(map(a.ToLocation, 'LocationName'), stationName)
     }
 
     function time() {
